@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación de Boda - José y Gloria</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="invitacion-contenedor" id="fullscreen-target">
+
+        <audio id="background-music" loop muted>
+            <source src="wedding-song.mp3" type="audio/mp3">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+
+        <video class="video-fondo" autoplay muted loop playsinline>
+            <source src="fondo1.mp4" type="video/mp4">
+            Tu navegador no soporta videos HTML5.
+        </video>
+
+        <div class="video-overlay"></div>
+
+        <input type="checkbox" id="abrir-sobre" hidden>
+
+        <div class="sobre">
+            <div class="solapa-superior"></div>
+
+            <label for="abrir-sobre" class="sello-cera" onclick="toggleFullScreen()">
+                <img src="sello.png" alt="Sello de Cera - Abrir">
+            </label>
+            <div class="cuerpo-sobre"></div>
+        </div>
+
+        <div class="tarjeta-boda">
+            <div class="tarjeta-fondo"></div>
+            <div class="contenido">
+
+                <p class="nombres-pareja">
+                    <span class="nombre-elegante">José Parmenio</span>
+                    <span class="separador">&</span>
+                    <span class="nombre-elegante">Gloria Esperanza</span>
+                </p>
+
+                <p class="tagline" id="typewriter"></p>
+
+
+                <div class="separador-decorativo"></div>
+                <h3>Queremos compartir contigo la felicidad de nuestra unión</h3>
+                <p><strong>Parroquia María Madre de la Iglesia</strong></p>
+                <p class="direccion">Calle 24b # 2b-bis-2a bis 50</p>
+
+                <p class="detalles-fecha">
+                    <b>Día:</b>
+                    <span class="fecha-resaltada">20</span> de diciembre de 2025<br>
+                    <b> Hora:</b> 3:00 P.M.
+                </p>
+
+                <div class="separador-decorativo"></div>
+
+                <h3>Recepción</h3>
+                <p><strong>Salón Comunal Barrio El Hato, Sector 2</strong></p>
+
+                <div class="separador-decorativo"></div>
+
+                <a href="https://wa.me/573132285668?text=%C2%A1All%C3%A1%20estaremos!" class="btn-confirmar"
+                    target="_blank">
+                    Confirmar Asistencia
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const element = document.getElementById('fullscreen-target');
+        const checkbox = document.getElementById('abrir-sobre');
+        const elTypewriter = document.getElementById("typewriter");
+        const music = document.getElementById('background-music');
+
+        const typewriterText =
+            `El amor que Dios sembró en nosotros florece hoy con la fuerza de Su bendición.
+Con gratitud por cada paso que Él ha guiado en nuestro camino, celebramos la unión de nuestras vidas bajo Su luz.`;
+        const speed = 85;
+        let index = 0;
+        let typingTimeout;
+
+        function type() {
+            if (index < typewriterText.length) {
+                elTypewriter.textContent += typewriterText.charAt(index);
+                index++;
+                typingTimeout = setTimeout(type, speed);
+            } else {
+                elTypewriter.classList.add("finished");
+            }
+        }
+
+        function toggleFullScreen() {
+
+            if (checkbox.checked) {
+                // Se está CERRANDO el sobre
+
+                // Pausar música y reiniciar Typewriter
+                clearTimeout(typingTimeout);
+                elTypewriter.textContent = '';
+                elTypewriter.classList.remove("finished");
+                index = 0;
+
+                music.pause();
+                music.muted = true;
+
+                // Salir de Fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            } else {
+                // Se está ABRIENDO el sobre
+
+                // Reproducir música
+                music.muted = false;
+                music.play().catch(error => {
+                    console.log("La reproducción de audio no pudo iniciarse:", error);
+                });
+
+                // Iniciar Pantalla Completa
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                }
+
+                // Iniciar el efecto de máquina de escribir con retraso
+                setTimeout(type, 1500);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

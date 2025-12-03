@@ -1,0 +1,384 @@
+/* =========================================
+    1. RESET Y CONFIGURACIÓN BÁSICA
+    ========================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --color-papel-claro: #fcfcf9;
+    --color-sobre-base: #e0d8c9;
+    --color-solapa: #b8bbac;
+    --color-texto: #333;
+    --color-acento: #4d4000;
+    /* Verde oscuro para los nombres */
+    --sombra-suave: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* =========================================
+    2. CONTENEDOR PRINCIPAL
+    ========================================= */
+
+.invitacion-contenedor {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* VIDEO DE FONDO */
+.video-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+/* CAPA OSCURA (OVERLAY) */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* =========================================
+    3. EL SOBRE (PULSO RÁPIDO)
+    ========================================= */
+
+.sobre {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background-color: var(--color-sobre-base);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    z-index: 10;
+    transition: all 0.5s ease;
+}
+
+.cuerpo-sobre {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('sobre2.png');
+    background-color: var(--color-sobre-base);
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+.solapa-superior {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background-color: var(--color-solapa);
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 100%, 0 50%);
+    transform-origin: top;
+    transition: transform 0.6s cubic-bezier(0.5, 0.2, 0.8, 0.9);
+    z-index: 30;
+    border-radius: 8px 8px 0 0;
+    filter: drop-shadow(0px 2px 0px rgba(0, 0, 0, 0.3)) drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.4));
+    backface-visibility: hidden;
+}
+
+/* SELLO */
+.sello-cera {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 40;
+    transition: transform 0.2s ease, opacity 0.3s ease;
+    /* Duración de la animación reducida a 1.5s para más velocidad */
+    animation: pulse-suave 1.5s ease-in-out infinite;
+}
+
+/* EFECTO HOVER: Simula la sensación de presionar/reaccionar al toque */
+.sello-cera:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    /* Aumentado ligeramente para mejor visibilidad */
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+
+.sello-cera img {
+    width: 130px;
+    height: 130px;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* ANIMACIÓN DE PULSO MÁS RÁPIDA Y FUERTE */
+@keyframes pulse-suave {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    50% {
+        /* Pulso aumentado para que se note mejor */
+        transform: translate(-50%, -50%) scale(1.07);
+        filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.4));
+    }
+}
+
+/* =========================================
+    4. LA TARJETA (FULL SCREEN)
+    ========================================= */
+
+.tarjeta-boda {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Estado inicial: Oculta abajo */
+    transform: translateY(100%);
+    opacity: 0;
+
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease 0.2s;
+}
+
+.tarjeta-fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('fondo3.png');
+    background-color: #fff;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.tarjeta-boda .contenido {
+    position: relative;
+    z-index: 5;
+    max-width: 600px;
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+    color: var(--color-texto);
+    background-color: transparent;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.tarjeta-boda h2 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    letter-spacing: 2px;
+}
+
+.btn-confirmar {
+    display: inline-block;
+    margin-top: 0px;
+    padding: 12px 25px;
+    background-color: #5d564f;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn-confirmar:hover {
+    background-color: #7b736b;
+}
+
+/* =========================================
+    5. ESTILOS DE TEXTO ELEGANTES Y TYPEWRITER
+    ========================================= */
+
+.contenido .nombres-pareja {
+    margin: 90px 0 30px;
+    line-height: 1.1;
+    padding: 0 20px;
+}
+
+/* NOMBRES ELEGANTES */
+.contenido .nombre-elegante {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4em;
+    font-weight: 400;
+    display: block;
+    color: var(--color-acento);
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0 5px;
+}
+
+.contenido .separador {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    font-weight: 400;
+    color: var(--color-acento);
+    margin: 10px 0;
+    display: block;
+}
+
+/* SUBTÍTULOS Y PÁRRAFOS */
+
+.separador-decorativo {
+    width: 90px;
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px auto;
+}
+
+.contenido h3 {
+    font-size: 1em;
+    color: #555;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-style: italic;
+}
+
+.contenido p {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.contenido .detalles-fecha {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #444;
+}
+
+.contenido .fecha-resaltada {
+    font-size: 2em;
+    color: var(--color-acento);
+    font-weight: 900;
+}
+
+/* EFECTO TYPEWRITER (CURSOR) */
+#typewriter {
+    font-size: 1rem;
+    display: inline-block;
+    padding-right: 4px;
+    white-space: pre-wrap;
+    color: var(--color-texto);
+    line-height: 1.4;
+    max-width: 90%;
+
+    /* Cursor: Se activa con el JS y la animación CSS */
+    border-right: 2px solid var(--color-texto);
+    animation: blinkCursor .7s step-end infinite;
+}
+
+@keyframes blinkCursor {
+    50% {
+        border-color: transparent;
+    }
+}
+
+#typewriter.finished {
+    border-right: none;
+    animation: none;
+}
+
+/* =========================================
+    6. INTERACTIVIDAD (CHECKBOX HACK)
+    ========================================= */
+
+/* Abrir solapa */
+#abrir-sobre:checked~.sobre .solapa-superior {
+    transform: rotateX(180deg);
+    box-shadow: none;
+    z-index: 1;
+}
+
+/* Ocultar sello */
+#abrir-sobre:checked~.sobre .sello-cera {
+    opacity: 0;
+    pointer-events: none;
+    animation: none;
+    transform: translate(-50%, -100%) scale(0.5);
+    transition: transform 0.8s, opacity 0.5s;
+}
+
+/* Ocultar el sobre completo una vez abierto */
+#abrir-sobre:checked~.sobre {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(2px);
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+/* Mostrar tarjeta (Sube y cubre el video) */
+#abrir-sobre:checked~.tarjeta-boda {
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 900;
+}
+
+/* =========================================
+    7. RESPONSIVIDAD (Diseño Compacto)
+    ========================================= */
+
+@media (max-width: 600px) {
+
+    .sobre {
+        width: 320px;
+        height: 240px;
+    }
+
+    .contenido .nombre-elegante {
+        font-size: 2.5em;
+    }
+
+    .contenido .separador {
+        font-size: 1.3em;
+    }
+
+    .tarjeta-boda .contenido {
+        padding: 30px 20px;
+    }
+
+    .sello-cera img {
+        width: 100px;
+        height: 100px;
+    }
+}
